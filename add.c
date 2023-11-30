@@ -1,24 +1,27 @@
 #include "monty.h"
 
 /**
- * m_add - add the top two elements of the stack
- * @stack: double pointer tot he beginning of the stack
- * @line_number: script line number
- *
- * Return: void
+ * _add - Add the first two elements of the stack.
+ * @stack: Double pointer to the head of the stack.
+ * @line_number: Line number of the opcode being executed.
  */
-void m_add(stack_t **stack, unsigned int line_number)
-{
-	int n = 0;
 
-	if (var.stack_len < 2)
+void _add(stack_t **stack, unsigned int line_number)
+{
+	int a, b, result;
+
+	/* Check if the stack contains at least 2 elements */
+	if (*stack == NULL || (*stack)->next == NULL)
 	{
-		dprintf(STDOUT_FILENO,
-			"L%u: can't add, stack too short\n",
-			line_number);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	n += (*stack)->n;
-	m_pop(stack, line_number);
-	(*stack)->n += n;
+
+	/* Get the values of the first two elements */
+	a = (*stack)->n;	   /* Store the value of the first element in 'a' */
+	b = (*stack)->next->n; /* Store the value of the second element in 'b' */
+	result = a + b;
+	/* Remove the second element from the stack */
+	_pop(stack, line_number);
+	(*stack)->n = result; /* Store the sum in the first element of the stack */
 }
